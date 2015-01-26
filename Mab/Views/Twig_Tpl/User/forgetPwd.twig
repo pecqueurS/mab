@@ -1,0 +1,33 @@
+{% extends "main.twig" %}
+
+	{% block stylesheetBase %}
+		{{ parent() }}
+		<link rel="stylesheet" href="css/signIn.css">
+	{% endblock %}
+
+	{% block header %}{% endblock %}
+
+	{% block menu %}{% endblock %}
+			
+	{% block content %}
+		<div id="logo">
+			<img src="/img/logo.png">
+		</div>
+		<div class="form-box" id="login-box">
+			<div class="header">Mot de passe oublié</div>
+			<form action="../../index.html" method="post">
+				<div class="body">
+					<div class="form-group">
+						<input name="email" class="form-control" placeholder="email" type="email">
+					</div>
+				</div>
+				<div class="footer">
+
+					<button type="submit" class="btn bg-mauve btn-block">Renvoyer un mot de passe</button>
+
+					<a href="/sign-in" class="text-center">Je suis deja membre</a><br>
+					<a href="/subscribe" class="text-center">S'inscrire</a>
+				</div>
+			</form>
+		</div>
+	{% endblock %}

@@ -1,0 +1,28 @@
+body.fixed > .wrapper {
+    margin-top: 0 !important;
+}
+
+body > .wrapper > .right-side {
+    margin-left: 0 !important;
+}
+
+.content-header {
+    display:none;
+}
+
+#logo {
+    margin-top:30px;
+    text-align:center;
+}
+
+#logo img {
+    width:360px;
+}
+
+#login-box {
+    margin-top: 30px;
+}
+
+input {
+    background: rgba(255,255,255,.3) !important;
+}

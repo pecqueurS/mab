@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	    <title>{% block title %}{{ pageRef|title }}{% endblock %} | MAB</title>
+
+        <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+        {% block stylesheetBase %}
+            {% include 'Layout/stylesheetBase.twig' %}
+        {% endblock %}
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="/AdminLTE-modified/js/plugins/html5shiv/html5shiv.min.js"></script>
+        <script src="/AdminLTE-modified/js/plugins/respond/dest/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body class="skin-black fixed">
+        <!-- header logo: style can be found in header.less -->
+        <header class="header">
+            {% block header %}
+                {% include 'Layout/header.twig' %}
+            {% endblock %}
+        </header>
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <!-- Left side column. contains the logo and sidebar -->
+            {% set vars = {'page': 'home', 'section': ''} %}
+            {% block menu %}
+                {% include 'Layout/menu.twig' with vars %}
+            {% endblock %}
+            <!-- Right side column. Contains the navbar and content of the page -->
+            <aside class="right-side">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>{% block h1 %}{% endblock %}</h1>
+                    <ol class="breadcrumb">
+                        {% block breadcrumb %}{% endblock %}
+                    </ol>
+                </section>
+
+                <!-- Main content -->
+                <section class="content">
+                    {% block content %}{% endblock %}
+                </section><!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+
+        <!-- add new calendar event modal -->
+
+        {% block scripts %}
+            {% include 'Layout/scripts.twig' %}
+        {% endblock %}
+    </body>
+</html>

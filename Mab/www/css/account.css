@@ -1,0 +1,15 @@
+.table > thead:first-child > tr:first-child > th {
+    border-top: 1px solid white;
+    background: rgba(255,255,255,0.5);
+    color: #333333;
+}
+
+.table > tfoot > tr:first-child > th {
+    border-bottom: 1px solid white;
+    background: rgba(255,255,255,0.5);
+    color: #333333;
+}
+
+.label {
+    font-size: 100%;
+}

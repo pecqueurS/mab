@@ -1,0 +1,61 @@
+{% extends "main.twig" %}
+
+{% block stylesheetBase %}
+	{{ parent() }}
+	<link href="/css/user.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block scripts %}
+	{{ parent() }}
+	<script src="/js/user.js"></script>
+{% endblock %}
+
+{% block h1 %}
+	Profil
+	<small>Modifier vos informations</small>
+{% endblock %}
+
+{% block breadcrumb %}
+	<li><a href="/"><i class="glyphicon glyphicon-user"></i> Profil</a></li>
+{% endblock %}
+
+{% block menu %}
+	{% set vars = {'page': 'userShow'} %}
+	{{ parent() }}
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="box box-primary">
+				<!-- form start -->
+				<form role="form">
+					<div class="box-body">
+						<div class="form-group">
+							<label for="email">Email</label>
+							<input name="email" class="form-control" placeholder="email" type="email">
+						</div>
+						<div class="form-group">
+							<label for="oldPwd">Ancien mot de passe</label>
+							<input name="oldPwd" class="form-control" placeholder="ancien mot de passe" type="password">
+						</div>
+						<div class="form-group">
+							<label for="pwd">Nouveau mot de passe</label>
+							<input name="pwd" class="form-control" placeholder="Nouveau mot de passe" type="password">
+						</div>
+						<div class="form-group">
+							<label for="pwd2">Confirmer mot de passe</label>
+							<input name="pwd2" class="form-control" placeholder="Retaper mot de passe" type="password">
+						</div>
+					</div><!-- /.box-body -->
+
+					<div class="box-footer">
+						<button type="reset" class="btn btn-danger btn-flat" style="float:left">Annuler</button>
+						<button type="submit" class="btn btn-primary btn-flat" style="float:right">Modifier</button>
+						<div style="clear:both;"></div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

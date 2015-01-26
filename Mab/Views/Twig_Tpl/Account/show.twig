@@ -1,0 +1,306 @@
+{% extends "main.twig" %}
+
+{% block stylesheetBase %}
+    {{ parent() }}
+    <link href="/css/account.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="/js/account.js"></script>
+{% endblock %}
+
+{% block h1 %}
+    Pecqueur
+    <small>Compta perso</small>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="/"><i class="fa fa-dashboard"></i> Tableau de bord</a></li>
+    <li><a href="/"><i class="ion ion-filing"></i> Vue générale</a></li>
+{% endblock %}
+
+{% block menu %}
+    {% set vars = {'page': 'account', 'section': 'account'} %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="col-lg-6 col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <i class="fa fa-bank"></i>
+                    <a href="/account/bank/1234"><h3 class="box-title" style="cursor:pointer">Société Générale<small> Janvier 2015</small></h3></a>
+                    <div class="box-tools pull-right">
+                        <span>Solde au 25-01-2015 : </span>
+                        <span class="label label-success">2 500,13 €</span>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table id="bank1" class="table table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Débit</th>
+                            <th>Crédit</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th colspan="3" style="text-align: right;">Total</th>
+                            <th style="white-space: nowrap;">2 500,15</th>
+                            <th style="white-space: nowrap;">4 250,00</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for i in 1..100 %}
+                            <tr>
+                                <td style="white-space: nowrap;">15-01-2015</td>
+                                <td style="white-space: nowrap;">CHQ</td>
+                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                <td style="white-space: nowrap;"></td>
+                                <td style="white-space: nowrap;">205,50</td>
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+            <div class="box">
+                <div class="box-header">
+                    <i class="fa fa-bank"></i>
+                    <a href="/account/bank/1234"><h3 class="box-title" style="cursor:pointer">Crédit Agricole<small> Janvier 2015</small></h3></a>
+                    <div class="box-tools pull-right">
+                        <span>Solde au 25-01-2015 : </span>
+                        <span class="label label-danger">- 300,45 €</span>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table id="bank2" class="table table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Débit</th>
+                            <th>Crédit</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th colspan="3" style="text-align: right;">Total</th>
+                            <th style="white-space: nowrap;">2 500,15</th>
+                            <th style="white-space: nowrap;">4 250,00</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for i in 1..100 %}
+                            <tr>
+                                <td style="white-space: nowrap;">15-01-2015</td>
+                                <td style="white-space: nowrap;">CHQ</td>
+                                <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                                <td style="white-space: nowrap;"></td>
+                                <td style="white-space: nowrap;">205,50</td>
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+        <div class="col-lg-6 col-xs-12">
+            <div class="box box-warning">
+                <div class="box-header">
+                    <i class="fa fa-bell"></i>
+                    <a href="/account/last-transactions/1234"><h3 class="box-title" style="cursor:pointer">Opérations en attente</h3></a>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table id="last-op" class="table table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Compte</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Débit</th>
+                            <th>Crédit</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th colspan="4" style="text-align: right;">Total</th>
+                            <th style="white-space: nowrap;">2 500,15</th>
+                            <th style="white-space: nowrap;">4 250,00</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td style="white-space: nowrap;">CB</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;"></td>
+                            <td style="white-space: nowrap;">205,50</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">CA</td>
+                            <td style="white-space: nowrap;">CB</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;"></td>
+                            <td style="white-space: nowrap;">205,50</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td style="white-space: nowrap;">ESP</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">205,50</td>
+                            <td style="white-space: nowrap;"></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td style="white-space: nowrap;">VIR</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">205,50</td>
+                            <td style="white-space: nowrap;"></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td style="white-space: nowrap;">CHQ</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;"></td>
+                            <td style="white-space: nowrap;">205,50</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+            <div class="box box-danger">
+                <div class="box-header">
+                    <i class="fa fa-calculator"></i>
+                    <a href="/account/last-transactions/1234"><h3 class="box-title" style="cursor:pointer">Prêts en cours</h3></a>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table id="loans" class="table table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>Echeance</th>
+                            <th>Compte</th>
+                            <th>Description</th>
+                            <th>Mensualité</th>
+                            <th>Restant</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th colspan="3" style="text-align: right;">Total</th>
+                            <th style="white-space: nowrap;">1 500,15</th>
+                            <th style="white-space: nowrap;">2 500,15</th>
+                            <th style="white-space: nowrap;">4 250,00</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                            <td style="white-space: nowrap;">205,50</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                            <td style="white-space: nowrap;">205,50</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                            <td style="white-space: nowrap;">205,50</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                            <td style="white-space: nowrap;">205,50</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+            <div class="box box-info">
+                <div class="box-header">
+                    <i class="fa fa-clock-o"></i>
+                    <a href="/account/last-transactions/1234"><h3 class="box-title" style="cursor:pointer">Prélèvements auto</h3></a>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table id="debit" class="table table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>Echeance</th>
+                            <th>Compte</th>
+                            <th>Description</th>
+                            <th>Mensualité</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th colspan="3" style="text-align: right;">Total</th>
+                            <th style="white-space: nowrap;">1 500,15</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">50,00</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+
+    </div>
+{% endblock %}
