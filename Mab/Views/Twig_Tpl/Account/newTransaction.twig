@@ -1,0 +1,271 @@
+{% extends "main.twig" %}
+
+{% block stylesheetBase %}
+    {{ parent() }}
+    <link href="/css/account.css" rel="stylesheet" type="text/css" />
+    <link href="/css/new-transaction.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="/js/new-transaction.js"></script>
+{% endblock %}
+
+{% block h1 %}
+    Pecqueur
+    <small>Nouvelle opération</small>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="/"><i class="fa fa-dashboard"></i> Tableau de bord</a></li>
+    <li><a href="/account/1234"><i class="ion ion-filing"></i> Vue générale</a></li>
+    <li><a href="/account/1234/new-transaction"><i class="fa fa-plus"></i> Nouvelle opération</a></li>
+{% endblock %}
+
+{% block menu %}
+    {% set vars = {'page': 'new-transaction', 'section': 'account'} %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box box-primary">
+                <!-- form start -->
+                <form role="form">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="bank">Banque</label>
+                            <select id="bank" class="form-control" required>
+                                <option value=""></option>
+                                <option>Société Générale</option>
+                                <option>Crédit Agricole</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Type</label>
+                            <select id="type" class="form-control" required>
+                                <option value=""></option>
+                                <option value="cb">Carte bancaire</option>
+                                <option value="chq">Chèque</option>
+                                <option value="esp">Retrait</option>
+                                <option value="vir">Virement</option>
+                                <option value="prelev">Nouveau prélèvement</option>
+                                <option value="remise-chq">Remise de chèque</option>
+                                <option value="depot-esp">Dépot d'espèce</option>
+                                <option value="pret">Nouveau prêt</option>
+                            </select>
+                        </div>
+                        <div class="operation" id="cb">
+                            <div class="form-group">
+                                <label for="cb-date">Date</label>
+                                <input id="cb-date" name="cb-date" class="form-control date-control" type="text" maxlength="10" value="{{ "now"|date('d-m-Y') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="cb-intitule">Intitulé</label>
+                                <input id="cb-intitule" name="cb-intitule" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="cb-montant">Montant</label>
+                                <input id="cb-montant" name="cb-montant" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="cb-categorie">Catégorie</label>
+                                <select id="cb-categorie" class="form-control">
+                                    <option>budgets</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="operation" id="chq">
+                            <div class="form-group">
+                                <label for="chq-date">Date</label>
+                                <input id="chq-date" name="chq-date" class="form-control date-control" type="text" maxlength="10" value="{{ "now"|date('d-m-Y') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="chq-numero">Numéro</label>
+                                <input id="chq-numero" name="chq-intitule" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="chq-intitule">Intitulé</label>
+                                <input id="chq-intitule" name="chq-categorie" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="chq-montant">Montant</label>
+                                <input id="chq-montant" name="chq-montant" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="chq-categorie">Catégorie</label>
+                                <select id="chq-categorie" class="form-control">
+                                    <option>budgets</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="operation" id="esp">
+                            <div class="form-group">
+                                <label for="esp-date">Date</label>
+                                <input id="esp-date" name="esp-date" class="form-control date-control" type="text" maxlength="10" value="{{ "now"|date('d-m-Y') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="esp-intitule">Intitulé</label>
+                                <input id="esp-intitule" name="esp-intitule" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="esp-montant">Montant</label>
+                                <input id="esp-montant" name="esp-montant" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="esp-categorie">Catégorie</label>
+                                <select id="esp-categorie" class="form-control">
+                                    <option>budgets</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="operation" id="vir">
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label><input name="vir-type" type="radio" checked> Interne</label>
+                                </div>
+                                <div class="radio">
+                                    <label><input name="vir-type" type="radio"> Externe</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="vir-account">Compte</label>
+                                <select id="vir-account" class="form-control">
+                                    <option>Credit Agricole</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="vir-date">Date</label>
+                                <input id="vir-date" name="vir-date" class="form-control date-control" type="text" maxlength="10" value="{{ "now"|date('d-m-Y') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="vir-intitule">Intitulé</label>
+                                <input id="vir-intitule" name="vir-intitule" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="vir-montant">Montant</label>
+                                <input id="vir-montant" name="vir-montant" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="vir-categorie">Catégorie</label>
+                                <select id="vir-categorie" class="form-control">
+                                    <option>budgets</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="operation" id="prelev">
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label><input name="prelev-type" type="radio" checked> Unique</label>
+                                </div>
+                                <div class="radio">
+                                    <label><input name="prelev-type" type="radio"> Récurrent</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="prelev-reccurence">Récurrence</label>
+                                <select id="prelev-reccurence" class="form-control">
+                                    <option selected>Tous les mois</option>
+                                    <option>Tous les 2 mois</option>
+                                    <option>Tous les 3 mois</option>
+                                    <option>Tous les 4 mois</option>
+                                    <option>Tous les 6 mois</option>
+                                    <option>Une fois par an</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="prelev-date">Date</label>
+                                <input id="prelev-date" name="prelev-date" class="form-control date-control" type="text" maxlength="10" value="{{ "now"|date('d-m-Y') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="prelev-intitule">Intitulé</label>
+                                <input id="prelev-intitule" name="prelev-intitule" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="prelev-montant">Montant</label>
+                                <input id="prelev-montant" name="prelev-montant" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="prelev-categorie">Catégorie</label>
+                                <select id="prelev-categorie" class="form-control">
+                                    <option>budgets</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="operation" id="remise-chq">
+                            <div class="form-group">
+                                <label for="remise-chq-date">Date</label>
+                                <input id="remise-chq-date" name="remise-chq-date" class="form-control date-control" type="text" maxlength="10" value="{{ "now"|date('d-m-Y') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="remise-chq-intitule">Intitulé</label>
+                                <input id="remise-chq-intitule" name="remise-chq-intitule" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="remise-chq-montant">Montant</label>
+                                <input id="remise-chq-montant" name="remise-chq-montant" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="remise-chq-categorie">Catégorie</label>
+                                <select id="remise-chq-categorie" class="form-control">
+                                    <option>budgets</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="operation" id="depot-esp">
+                            <div class="form-group">
+                                <label for="depot-esp-date">Date</label>
+                                <input id="depot-esp-date" name="depot-esp-date" class="form-control date-control" type="text" maxlength="10" value="{{ "now"|date('d-m-Y') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="depot-esp-intitule">Intitulé</label>
+                                <input id="depot-esp-intitule" name="depot-esp-intitule" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="depot-esp-montant">Montant</label>
+                                <input id="depot-esp-montant" name="depot-esp-montant" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="depot-esp-categorie">Catégorie</label>
+                                <select id="depot-esp-categorie" class="form-control">
+                                    <option>budgets</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="operation" id="pret">
+                            <div class="form-group">
+                                <label for="pret-date">Date</label>
+                                <input id="pret-date" name="pret-date" class="form-control date-control" type="text" maxlength="10" value="{{ "now"|date('d-m-Y') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="pret-intitule">Intitulé</label>
+                                <input id="pret-intitule" name="pret-intitule" class="form-control" type="text" maxlength="256">
+                            </div>
+                            <div class="form-group">
+                                <label for="pret-echeance">Nombre d'écheances</label>
+                                <input id="pret-echeance" name="pret-echeance" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="pret-montant">Montant</label>
+                                <input id="pret-montant" name="pret-montant" class="form-control" type="text" maxlength="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="pret-categorie">Catégorie</label>
+                                <select id="pret-categorie" class="form-control">
+                                    <option>budgets</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div><!-- /.box-body -->
+
+                    <div class="box-footer">
+                        <button type="reset" class="btn btn-danger btn-flat" style="float:left">Annuler</button>
+                        <button type="submit" class="btn btn-primary btn-flat" style="float:right">Ajouter</button>
+                        <div style="clear:both;"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
