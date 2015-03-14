@@ -1,0 +1,113 @@
+{% extends "main.twig" %}
+
+{% block stylesheetBase %}
+    {{ parent() }}
+    <link href="/css/account.css" rel="stylesheet" type="text/css" />
+    <link href="/css/waiting-transaction.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script src="/js/account.js"></script>
+    <script src="/js/waiting-transaction.js"></script>
+{% endblock %}
+
+{% block h1 %}
+    Pecqueur
+    <small>Opérations en attente</small>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="/"><i class="fa fa-dashboard"></i> Tableau de bord</a></li>
+    <li><a href="/account/1234"><i class="ion ion-filing"></i> Vue générale</a></li>
+    <li><a href="/account/1234/waiting-transaction"><i class="fa fa-plus"></i> Opérations en attente</a></li>
+{% endblock %}
+
+{% block menu %}
+    {% set vars = {'page': 'waiting-transaction', 'section': 'account'} %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="box box-warning">
+                <div class="box-header">
+                    <i class="fa fa-bell"></i>
+                    <a href="/account/waiting-transactions/1234"><h3 class="box-title" style="cursor:pointer">Opérations en attente</h3></a>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive">
+                    <table id="last-op" class="table table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Compte</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Débit</th>
+                            <th>Crédit</th>
+                            <th style="text-align: right">Actions</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th colspan="4" style="text-align: right;">Total</th>
+                            <th style="white-space: nowrap;">2 500,15</th>
+                            <th style="white-space: nowrap;">4 250,00</th>
+                            <th style="white-space: nowrap;"></th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td style="white-space: nowrap;">CB</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;"></td>
+                            <td style="white-space: nowrap;">205,50</td>
+                            <td style="white-space: nowrap;text-align: right;"><i title="Pointage Banque" data-type="bank" class="fa fa-check-square-o actions"></i> <i title="Editer" data-type="edit" class="glyphicon glyphicon-pencil actions"></i> <i title="Supprimer" data-type="delete" class="glyphicon glyphicon-remove actions"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">CA</td>
+                            <td style="white-space: nowrap;">CB</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;"></td>
+                            <td style="white-space: nowrap;">205,50</td>
+                            <td style="white-space: nowrap;text-align: right;"><i title="Pointage Banque" data-type="bank" class="fa fa-check-square-o actions"></i> <i title="Editer" data-type="edit" class="glyphicon glyphicon-pencil actions"></i> <i title="Supprimer" data-type="delete" class="glyphicon glyphicon-remove actions"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td style="white-space: nowrap;">ESP</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">205,50</td>
+                            <td style="white-space: nowrap;"></td>
+                            <td style="white-space: nowrap;text-align: right;"><i title="Pointage Banque" data-type="bank" class="fa fa-check-square-o actions"></i> <i title="Editer" data-type="edit" class="glyphicon glyphicon-pencil actions"></i> <i title="Supprimer" data-type="delete" class="glyphicon glyphicon-remove actions"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td style="white-space: nowrap;">VIR</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;">205,50</td>
+                            <td style="white-space: nowrap;"></td>
+                            <td style="white-space: nowrap;text-align: right;"><i title="Pointage Banque" data-type="bank" class="fa fa-check-square-o actions"></i> <i title="Editer" data-type="edit" class="glyphicon glyphicon-pencil actions"></i> <i title="Supprimer" data-type="delete" class="glyphicon glyphicon-remove actions"></i></td>
+                        </tr>
+                        <tr>
+                            <td style="white-space: nowrap;">15-01-2015</td>
+                            <td style="white-space: nowrap;">SG</td>
+                            <td style="white-space: nowrap;">CHQ</td>
+                            <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                            <td style="white-space: nowrap;"></td>
+                            <td style="white-space: nowrap;">205,50</td>
+                            <td style="white-space: nowrap;text-align: right;"><i title="Pointage Banque" data-type="bank" class="fa fa-check-square-o actions"></i> <i title="Editer" data-type="edit" class="glyphicon glyphicon-pencil actions"></i> <i title="Supprimer" data-type="delete" class="glyphicon glyphicon-remove actions"></i></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+
+        </div>
+    </div>
+{% endblock %}
