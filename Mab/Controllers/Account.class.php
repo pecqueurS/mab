@@ -44,6 +44,15 @@ class Account {
     }
 
 
+    public function loans() {
+        //var_dump($id);
+        $this->redirectUser('user', true);
+        $response = array();
+
+        return $response;
+    }
+
+
     protected static function getErrorMessage($message) {
         if(isset($_SESSION['message'])) $_SESSION["message"] .= $message;
         else $_SESSION['message'] = $message;

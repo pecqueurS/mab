@@ -1,0 +1,14 @@
+.callout h4 {
+    font-size: inherit;
+    text-align: center;
+}
+
+.callout p {
+    color: #666666;
+    font-size: 18px;
+    text-align: center;
+}
+
+.callout {
+    padding: 15px 0;
+}

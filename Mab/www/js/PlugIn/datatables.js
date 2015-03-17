@@ -11,7 +11,7 @@ $.tableGlobals = {
         sInfo: "De _START_ à _END_ sur _TOTAL_ entrées",
         sInfoEmpty: "Pas d'entrée",
         sInfoFiltered: "(filtrés sur _MAX_ entrées)",
-        sLengthMenu: '<div style="margin-right:10px" class="form-group">'+
+        sLengthMenu: '<div style="margin-right:10px;display: inline-block;margin-bottom: 0;" class="form-group">'+
         '<select class="form-control">'+
         '<option value="10">10</option>'+
         '<option value="20">20</option>'+
@@ -30,9 +30,13 @@ $.tableGlobals = {
 (function( $ ) {
 // shortcut
     $.fn.datatable = function(opts) {
-        var settings = opts == undefined ? $.tableGlobals : opts;
+        var settings = $.tableGlobals;
+        if (opts !== undefined) {
+            // Merge object2 into object1, recursively
+            $.extend( true, settings, opts );
+        }
         $(this).dataTable(settings);
-        $('.dataTables_filter input').addClass('form-control');
+        $('.dataTables_filter input').addClass('form-control').css('marginBottom', '0');
         return this;
     };
 })( jQuery );
