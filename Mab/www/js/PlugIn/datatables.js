@@ -20,7 +20,7 @@ $.tableGlobals = {
         '<option value="50">50</option>'+
         '<option value="-1">Toutes</option>'+
         '</select>'+
-        '</div> lignes par page',
+        '</div> lignes',
         sSearch: ''
     },
     sDom: "<'row'<'col-xs-6'l><'col-xs-6'f>r>"+
