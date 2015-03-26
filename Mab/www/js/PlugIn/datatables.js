@@ -1,4 +1,4 @@
-// define some globals for alerts
+// define some globals for datatable default
 $.tableGlobals = {
     bPaginate: true,
     bLengthChange: true,
