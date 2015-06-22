@@ -47,3 +47,7 @@
 .table > tfoot > tr.info > th {
     color: #666666;
 }
+
+.dropdown-menu li {
+    cursor: pointer;
+}

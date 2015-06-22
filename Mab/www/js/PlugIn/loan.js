@@ -70,6 +70,19 @@ $.loanGlobals = {
         return usDate;
     };
 
+    var dateToUs = function(dateObj, delimiter) {
+        if (delimiter == undefined) delimiter = '-';
+        var year = dateObj.getFullYear();
+        var month = (dateObj.getMonth() < 9 ? '0' : '') + (dateObj.getMonth() + 1);
+        var day = (dateObj.getDate() <= 9 ? '0' : '') + (dateObj.getDate());
+
+        return year + delimiter + month + delimiter + day;
+    };
+
+    var dateToFr = function(dateObj, delimiter) {
+        return usToFrDate(dateToUs(dateObj, delimiter), delimiter);
+    };
+
 
     var headerHtml = function (name) {
        return  '<div class="box-header">\
@@ -315,17 +328,18 @@ $.loanGlobals = {
 
         // actions
         $(loan).on('change', '[name="recurrence"]', function() {
-            console.log($(this).val());
+            var step = $(this).val();
             var i = 0;
             var dateStart = null;
             findRowsInput(dataTable).each(function() {
-                $(this).find('td').eq(0).find('input');
-                console.log(new Date(frToUsDate($(this).find('td').eq(0).find('input').val())));
-
+                var input = $(this).find('td').eq(0).find('input');
                 if (i === 0) {
-                    dateStart = new Date(frToUsDate($(this).find('td').eq(0).find('input').val()));
+                    dateStart = new Date(frToUsDate(input.val()));
                     i++;
                 } else {
+                    dateStart.setMonth(parseInt(dateStart.getMonth()) + parseInt(step));
+                    console.log(dateToFr(dateStart));
+                    input.val(dateToFr(dateStart));
                     /* change value of next months */
                     //$(this).remove();
                 }
