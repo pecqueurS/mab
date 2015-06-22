@@ -111,9 +111,12 @@ $.loanGlobals = {
                 element = '<p style="' + (name === 'description' ? 'text-align: justify;' : '') + '">' + value + '</p>';
         }
 
-        return '<div class="col-xs-12 ' + (name === 'description' ? '' : 'col-sm-6') + '">' +
-            '<div style="' + (name === 'description' ? 'padding: 15px;' : '') + '" class="callout ' + (name === 'description' ? 'calloutinfo bg-aqua' : 'callout-danger bg-red') + '">' +
-                '<h4 style="' + (name === 'description' ? 'text-align: left;' : '') + '">' + description + '</h4>' +
+        var isBigAqua = name === 'description'
+                      || name === 'remainingToDispatch';
+
+        return '<div class="col-xs-12 ' + (isBigAqua ? '' : 'col-sm-6') + '">' +
+            '<div style="' + (isBigAqua ? 'padding: 15px;' : '') + '" class="callout ' + (isBigAqua ? 'calloutinfo bg-aqua' : 'callout-danger bg-red') + '">' +
+                '<h4 style="' + (isBigAqua ? 'text-align: left;' : '') + '">' + description + '</h4>' +
                 element +
             '</div>' +
         '</div>';
@@ -183,6 +186,10 @@ $.loanGlobals = {
             </tr>';
     };
 
+    var remainingToDispatch = function() {
+        return '<div class="row">' + descriptionHtml('Reste à répartir', 'p', 'remainingToDispatch', '0') + '</div>';
+    };
+
     var detailsLoan = function (opts) {
         var TableLoan = $(document.createElement('div'));
         TableLoan.addClass('col-xs-12 col-sm-6 col-lg-5');
@@ -222,7 +229,6 @@ $.loanGlobals = {
             tableBody.append(rowTable(opts.treats[i], rowClass));
         }
 
-
         table.append(tableHead);
         table.append(tableBody);
         tableResponsive.append(table);
@@ -231,7 +237,13 @@ $.loanGlobals = {
         return TableLoan;
     };
 
+    var findRowsInput = function(table) {
+        table.fnSort( [ [1,'asc'] ] );
+        return table.$('tr.editable, tr.active');
+    };
+
     $.loan = function(loan, opts) {
+        // HTML Construction
         $(loan).append(headerHtml(opts.name));
         var informationLoan = informationsLoan('info', opts);
         var detailLoan = detailsLoan(opts);
@@ -240,46 +252,85 @@ $.loanGlobals = {
         boxBody.addClass('box-body');
         var row = $(document.createElement('div'));
         row.addClass('row');
-
         row.append(informationLoan);
         row.append(detailLoan);
         boxBody.append(row);
-
         $(loan).append(boxBody);
 
-        $(loan).find('#loan_' + opts.id).datatable();
+        // Datatable
+        var settings = {
+            iDisplayLength: 12,
+            oLanguage: {
+                sLengthMenu: '<div style="margin-right:10px;display: inline-block;margin-bottom: 0;" class="form-group">'+
+                '<select class="form-control">'+
+                '<option value="12">12</option>'+
+                '<option value="24">24</option>'+
+                '<option value="48">48</option>'+
+                '<option value="60">60</option>'+
+                '<option value="72">72</option>'+
+                '<option value="-1">Toutes</option>'+
+                '</select>'+
+                '</div> lignes',
+                sSearch: ''
+            }
+        };
+        var dataTable = $(loan).find('#loan_' + opts.id).datatable(settings);
 
+        // Editable
         $(loan).find('.change_loan').click(function() {
             var btns = $(this).parents('.box-header').find('.box-tools > .btn');
             var optBtn = $(this).parents('.btn-group');
             btns.show();
             optBtn.hide();
-            var $loan = $(this).parents('.box-body');
+            var $loan = $(this).parents('.box');
             var editLoan = informationsLoan('edit', opts);
             informationLoan.replaceWith(editLoan);
-            console.log($(this), $loan);
 
-            var tableEditable = $loan.find('table .editable, table .active');
-            $loan.find('.dataTables_wrapper > .row').hide();
-            tableEditable.each(function() {
-                var dateEcheance = $(this).find('td').eq(0);
-                var amountEcheance = $(this).find('td').eq(2);
-                var dateTxt = dateEcheance.text();
-                var amountTxt = parseFloat((amountEcheance.text()).replace(' ', ''));
-                dateEcheance.html('<input type="text" class="form-control" value="' + dateTxt + '">');
-                amountEcheance.html('<input type="text" class="form-control" value="' + amountTxt + '">');
+            dataTable.fnFilter('');
+            $loan.find('.dataTables_wrapper > .row:first-child').hide();
+
+            findRowsInput(dataTable).each(function() {
+                $(this).each(function() {
+                    var dateEcheance = $(this).find('td').eq(0);
+                    var amountEcheance = $(this).find('td').eq(2);
+                    var dateTxt = dateEcheance.text();
+                    var amountTxt = parseFloat((amountEcheance.text()).replace(' ', ''));
+                    dateEcheance.html('<input type="text" class="form-control" value="' + dateTxt + '">');
+                    amountEcheance.html('<input type="text" class="form-control" value="' + amountTxt + '">');
+                });
             });
 
+            $loan.find('.table-responsive').parent().prepend(remainingToDispatch());
         });
 
+        // Cancel btn
         $(loan).find('.cancel_loan').click(function() {
             window.location.reload();
         });
 
+        // Valid btn
         $(loan).find('.valid_loan').click(function() {
             window.location.reload();
         });
 
+        // actions
+        $(loan).on('change', '[name="recurrence"]', function() {
+            console.log($(this).val());
+            var i = 0;
+            var dateStart = null;
+            findRowsInput(dataTable).each(function() {
+                $(this).find('td').eq(0).find('input');
+                console.log(new Date(frToUsDate($(this).find('td').eq(0).find('input').val())));
+
+                if (i === 0) {
+                    dateStart = new Date(frToUsDate($(this).find('td').eq(0).find('input').val()));
+                    i++;
+                } else {
+                    /* change value of next months */
+                    //$(this).remove();
+                }
+            });
+        });
     };
 
 

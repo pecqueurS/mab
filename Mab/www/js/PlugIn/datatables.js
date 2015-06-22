@@ -2,6 +2,7 @@
 $.tableGlobals = {
     bPaginate: true,
     bLengthChange: true,
+    iDisplayLength: 10,
     bFilter: true,
     bSort: true,
     bInfo: true,
@@ -35,9 +36,9 @@ $.tableGlobals = {
             // Merge object2 into object1, recursively
             $.extend( true, settings, opts );
         }
-        $(this).dataTable(settings);
+        var oTable = $(this).dataTable(settings);
         $('.dataTables_filter input').addClass('form-control').css('marginBottom', '0');
-        return this;
+        return oTable;
     };
 })( jQuery );
 
