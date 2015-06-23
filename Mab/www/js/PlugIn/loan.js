@@ -194,7 +194,7 @@ $.loanGlobals = {
         return '<tr class="' + rowClass + '">\
                 <td style="white-space: nowrap;">' + usToFrDate(treats.date) + '</td>\
                 <td style="white-space: nowrap;">' + treats.nb + '</td>\
-                <td style="white-space: nowrap;text-align: right;">' + formatAmount(treats.treatAmount) + '</td>\
+                <td class="amountTreat" style="white-space: nowrap;text-align: right;">' + formatAmount(treats.treatAmount) + '</td>\
                 <td style="white-space: nowrap;text-align: right;">' + formatAmount(treats.remaining) + '</td>\
             </tr>';
     };
@@ -203,8 +203,8 @@ $.loanGlobals = {
         return '<div class="row">' + descriptionHtml('Reste à répartir', 'p', 'remainingToDispatch', '0') + '</div>';
     };
 
-    var getRemainingToDispatch = function() {
-        return parseFloat($('.remainingToDispatch p').text().trim());
+    var getRemainingToDispatch = function(loan) {
+        return parseFloat($(loan).find('.remainingToDispatch p').text().trim());
     };
 
     var detailsLoan = function (opts) {
@@ -257,6 +257,15 @@ $.loanGlobals = {
     var findRowsInput = function(table) {
         table.fnSort( [ [1,'asc'] ] );
         return table.$('tr.editable, tr.active');
+    };
+
+    var isValidLoan = function(loan) {
+        var btn = $(loan).find('.valid_loan');
+        if (getRemainingToDispatch(loan) == 0) {
+            btn.show();
+        } else {
+            btn.hide();
+        }
     };
 
     $.loan = function(loan, opts) {
@@ -351,6 +360,7 @@ $.loanGlobals = {
                     input.val(dateToFr(dateStart));
                 }
             });
+            isValidLoan(loan);
         });
 
         // Treats numbers
@@ -365,7 +375,7 @@ $.loanGlobals = {
                 $(this).val(tr.length);
             } else {
                 if (tr.length > nbOfTreats) {
-                    var remainToDispatch = getRemainingToDispatch();
+                    var remainToDispatch = getRemainingToDispatch(loan);
                     tr.each(function() {
                         var value = $(this).find('td').eq(2).find('input').val();
                         if (value !== undefined && nbOfTreats <= i) {
@@ -374,7 +384,7 @@ $.loanGlobals = {
                         }
                         i++;
                     });
-                    $('.remainingToDispatch p').html(remainToDispatch);
+                    $(loan).find('.remainingToDispatch p').html(remainToDispatch);
                 } else if (tr.length < nbOfTreats) {
                     var lastRow = dataTable.$('tr:last-child');
                     var isEditable = lastRow.hasClass('editable');
@@ -404,29 +414,57 @@ $.loanGlobals = {
                         var newTr = dataTable.$('tr').last();
                         newTr.addClass(isEditable ? 'editable' : 'info');
                         newTr.find('td').css({whiteSpace:'nowrap'});
-                        newTr.find('td').eq(2).css({textAlign:'right'});
+                        newTr.find('td').eq(2).css({textAlign:'right'}).addClass('amountTreat');
                         newTr.find('td').eq(3).css({textAlign:'right'});
                     }
                 }
             }
+            isValidLoan(loan);
+        });
 
-            // firstDateTreat
-            $(loan).on('change', '[name="firstDateTreat"]', function() {
-                var newDate = $(this).val();
-                var recurrence = $('[name="recurrence"]').val();
-                var i = 0;
-                var dateStart = new Date(frToUsDate(newDate));
-                findRowsInput(dataTable).each(function() {
-                    i === 0
-                        ? i = 1
-                        : dateStart.setMonth(parseInt(dateStart.getMonth()) + parseInt(recurrence));
+        // firstDateTreat
+        $(loan).on('change', '[name="firstDateTreat"]', function() {
+            var newDate = $(this).val();
+            var recurrence = $('[name="recurrence"]').val();
+            var i = 0;
+            var dateStart = new Date(frToUsDate(newDate));
+            findRowsInput(dataTable).each(function() {
+                i === 0
+                    ? i = 1
+                    : dateStart.setMonth(parseInt(dateStart.getMonth()) + parseInt(recurrence));
 
-                    var input = $(this).find('td').eq(0).find('input');
-                    input.val(dateToFr(dateStart));
-                });
+                var input = $(this).find('td').eq(0).find('input');
+                input.val(dateToFr(dateStart));
             });
+            isValidLoan(loan);
+        });
 
-
+        // Total Amount, interest, treats, left to pay
+        $(loan).on('change', '[name="totalAmount"], [name="interest"], [name="leftToPay"], .amountTreat input', function() {
+            var totalLoan = $(loan).find('[name="totalAmount"]').val();
+            var interestLoan = $(loan).find('[name="interest"]').val();
+            var leftToPayLoan = $(loan).find('[name="leftToPay"]').val();
+            var treatsLoan = dataTable.$('tr');
+            var dispatch = getRemainingToDispatch(loan);
+console.log(dispatch);
+            var oldValue = $(this).attr('value');
+            var newValue = $(this).val();
+            var diff = parseFloat(newValue - oldValue);
+            $(this).attr('value', $(this).val());
+            switch ($(this).attr('name')) {
+                case 'totalAmount':
+                case 'interest':
+                    $(loan).find('.remainingToDispatch p').html(dispatch + diff);
+                    $(loan).find('[name="leftToPay"]').attr('value', parseFloat(leftToPayLoan) + diff);
+                    break;
+                case 'leftToPay':
+                    $(loan).find('.remainingToDispatch p').html(dispatch + diff);
+                    $(loan).find('[name="totalAmount"]').attr('value', parseFloat(totalLoan) + diff);
+                    break;
+                default:
+                    $(loan).find('.remainingToDispatch p').html(dispatch - diff);
+            }
+            isValidLoan(loan);
         });
     };
 
