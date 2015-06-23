@@ -399,9 +399,9 @@ $.loanGlobals = {
                         rowToAdd[1] =  j + 1;
                         rowToAdd[2] = newRow.find('td').eq(2).html();
                         rowToAdd[3] = newRow.find('td').eq(3).html();
-                        var row = dataTable.fnAddData(rowToAdd);
+                        dataTable.fnAddData(rowToAdd);
+
                         var newTr = dataTable.$('tr').last();
-                        console.log(newTr);
                         newTr.addClass(isEditable ? 'editable' : 'info');
                         newTr.find('td').css({whiteSpace:'nowrap'});
                         newTr.find('td').eq(2).css({textAlign:'right'});
@@ -409,6 +409,22 @@ $.loanGlobals = {
                     }
                 }
             }
+
+            // firstDateTreat
+            $(loan).on('change', '[name="firstDateTreat"]', function() {
+                var newDate = $(this).val();
+                var recurrence = $('[name="recurrence"]').val();
+                var i = 0;
+                var dateStart = new Date(frToUsDate(newDate));
+                findRowsInput(dataTable).each(function() {
+                    i === 0
+                        ? i = 1
+                        : dateStart.setMonth(parseInt(dateStart.getMonth()) + parseInt(recurrence));
+
+                    var input = $(this).find('td').eq(0).find('input');
+                    input.val(dateToFr(dateStart));
+                });
+            });
 
 
         });
