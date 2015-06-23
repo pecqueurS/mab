@@ -127,7 +127,7 @@ $.loanGlobals = {
         var isBigAqua = name === 'description'
                       || name === 'remainingToDispatch';
 
-        return '<div class="col-xs-12 ' + (isBigAqua ? '' : 'col-sm-6') + '">' +
+        return '<div class="col-xs-12 ' + (isBigAqua ? ' ' : 'col-sm-6 ') + name + '">' +
             '<div style="' + (isBigAqua ? 'padding: 15px;' : '') + '" class="callout ' + (isBigAqua ? 'calloutinfo bg-aqua' : 'callout-danger bg-red') + '">' +
                 '<h4 style="' + (isBigAqua ? 'text-align: left;' : '') + '">' + description + '</h4>' +
                 element +
@@ -201,6 +201,10 @@ $.loanGlobals = {
 
     var remainingToDispatch = function() {
         return '<div class="row">' + descriptionHtml('Reste à répartir', 'p', 'remainingToDispatch', '0') + '</div>';
+    };
+
+    var getRemainingToDispatch = function() {
+        return parseFloat($('.remainingToDispatch p').text().trim());
     };
 
     var detailsLoan = function (opts) {
@@ -299,6 +303,11 @@ $.loanGlobals = {
             var editLoan = informationsLoan('edit', opts);
             informationLoan.replaceWith(editLoan);
 
+            var pastRows = dataTable.$('tr.info');
+            if (pastRows.length > 0) {
+                $(loan).find('.firstDateTreat input').attr('disabled', true);
+            }
+
             dataTable.fnFilter('');
             $loan.find('.dataTables_wrapper > .row:first-child').hide();
 
@@ -327,6 +336,7 @@ $.loanGlobals = {
         });
 
         // actions
+        // recurrence
         $(loan).on('change', '[name="recurrence"]', function() {
             var step = $(this).val();
             var i = 0;
@@ -338,12 +348,69 @@ $.loanGlobals = {
                     i++;
                 } else {
                     dateStart.setMonth(parseInt(dateStart.getMonth()) + parseInt(step));
-                    console.log(dateToFr(dateStart));
                     input.val(dateToFr(dateStart));
-                    /* change value of next months */
-                    //$(this).remove();
                 }
             });
+        });
+
+        // Treats numbers
+        $(loan).on('change', '[name="nbOfTreats"]', function() {
+            var nbOfTreats = $(this).val();
+            var i = 0;
+            var tr = dataTable.$('tr');
+            var trActive = dataTable.$('tr.active');
+            var trEditable = dataTable.$('tr.editable');
+            var trPastLength = (tr.length) - (trActive.length) - (trEditable.length);
+            if (trPastLength > nbOfTreats) {
+                $(this).val(tr.length);
+            } else {
+                if (tr.length > nbOfTreats) {
+                    var remainToDispatch = getRemainingToDispatch();
+                    tr.each(function() {
+                        var value = $(this).find('td').eq(2).find('input').val();
+                        if (value !== undefined && nbOfTreats <= i) {
+                            remainToDispatch += parseFloat(value);
+                            dataTable.fnDeleteRow($(this)[0]);
+                        }
+                        i++;
+                    });
+                    $('.remainingToDispatch p').html(remainToDispatch);
+                } else if (tr.length < nbOfTreats) {
+                    var lastRow = dataTable.$('tr:last-child');
+                    var isEditable = lastRow.hasClass('editable');
+                    var date = new Date(
+                        isEditable
+                            ? frToUsDate(lastRow.find('td').eq(0).find('input').val())
+                            : frToUsDate(lastRow.find('td').eq(0).text().trim())
+                    );
+                    for (var j = tr.length; j < nbOfTreats; j++) {
+                        var newRow = lastRow.clone();
+                        var recurrence = $('[name="recurrence"]').val();
+                        date.setMonth(parseInt(date.getMonth()) + parseInt(recurrence));
+                        if (isEditable) {
+                            newRow.find('td').eq(0).find('input').attr('value', dateToFr(date));
+                            newRow.find('td').eq(2).find('input').attr('value', 0);
+                        } else {
+                            newRow.find('td').eq(0).html(dateToFr(date));
+                            newRow.find('td').eq(2).html(0);
+                        }
+                        var rowToAdd = new Array(4);
+                        rowToAdd[0] = newRow.find('td').eq(0).html();
+                        rowToAdd[1] =  j + 1;
+                        rowToAdd[2] = newRow.find('td').eq(2).html();
+                        rowToAdd[3] = newRow.find('td').eq(3).html();
+                        var row = dataTable.fnAddData(rowToAdd);
+                        var newTr = dataTable.$('tr').last();
+                        console.log(newTr);
+                        newTr.addClass(isEditable ? 'editable' : 'info');
+                        newTr.find('td').css({whiteSpace:'nowrap'});
+                        newTr.find('td').eq(2).css({textAlign:'right'});
+                        newTr.find('td').eq(3).css({textAlign:'right'});
+                    }
+                }
+            }
+
+
         });
     };
 
