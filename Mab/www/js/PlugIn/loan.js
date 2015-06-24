@@ -269,7 +269,6 @@ $.loanGlobals = {
     };
 
     var sendData = function (data) {
-        var result;
         $.post('url', data, function (response) {
             if (response.response.status == 'ok') {
                 //window.location.reload();
@@ -277,8 +276,6 @@ $.loanGlobals = {
                 // une erreur est survenue
             }
         });
-
-
     };
 
     $.loan = function(loan, opts) {
@@ -314,6 +311,16 @@ $.loanGlobals = {
             }
         };
         var dataTable = $(loan).find('#loan_' + opts.id).datatable(settings);
+
+        $(loan).find('.delete_loan').click(function() {
+            $.get('url' + opts.id, function (response) {
+                if (response.response.status == 'ok') {
+                    //window.location.reload();
+                } else {
+                    // une erreur est survenue
+                }
+            });
+        });
 
         // Editable
         $(loan).find('.change_loan').click(function() {
