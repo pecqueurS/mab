@@ -160,7 +160,7 @@ $.loanGlobals = {
 
     var informationsLoan = function($type, opts) {
         var informationLoan = $(document.createElement('div'));
-        informationLoan.addClass('row-fluid col-xs-12 col-sm-6 col-lg-7');
+        informationLoan.addClass('row-fluid col-xs-12 col-sm-6 col-lg-7 description_loan');
         switch ($type) {
             case 'edit':
                 informationLoan.append(descriptionHtml('Description', 'textarea', 'description', opts.description));
@@ -268,6 +268,19 @@ $.loanGlobals = {
         }
     };
 
+    var sendData = function (data) {
+        var result;
+        $.post('url', data, function (response) {
+            if (response.response.status == 'ok') {
+                //window.location.reload();
+            } else {
+                // une erreur est survenue
+            }
+        });
+
+
+    };
+
     $.loan = function(loan, opts) {
         // HTML Construction
         $(loan).append(headerHtml(opts.name));
@@ -341,7 +354,41 @@ $.loanGlobals = {
 
         // Valid btn
         $(loan).find('.valid_loan').click(function() {
-            window.location.reload();
+            //alert('test');
+            var descriptionLoan = $(loan).find('.description_loan input, .description_loan select, .description_loan textarea');
+            var dataLoan = dataTable.$('tr');
+            var lengthDetailsLoan = descriptionLoan.length;
+            for (var i = 0; i < lengthDetailsLoan; i++) {
+                opts[$(descriptionLoan[i]).attr('name')] = $(descriptionLoan[i]).val();
+            }
+            var lengthTreats = dataLoan.length;
+            var lengthOptTreats = $(opts.treats).length;
+            for (var i = 0; i < lengthTreats; i++) {
+                var dateTreat = $(dataLoan[i]).find('td').eq(0).find('input').val();
+                var nbTreat = $(dataLoan[i]).find('td').eq(1).html().trim();
+                var amountTreat = $(dataLoan[i]).find('td').eq(2).find('input').val();
+                if (dateTreat !== undefined) {
+                    dateTreat = frToUsDate(dateTreat);
+                    for (var j = 0; j < lengthOptTreats; j++) {
+                        if (opts.treats[j].nb == nbTreat) {
+                            opts.treats[j].date = dateTreat;
+                            opts.treats[j].treatAmount = amountTreat;
+                            break;
+                        }
+                    }
+
+                    if (j == lengthOptTreats) {
+                        opts.treats.push({
+                            date: dateTreat,
+                            nb: nbTreat,
+                            treatAmount: amountTreat,
+                            remaining: 0
+                        });
+                    }
+                }
+
+                sendData(opts);
+            }
         });
 
         // actions
@@ -446,7 +493,6 @@ $.loanGlobals = {
             var leftToPayLoan = $(loan).find('[name="leftToPay"]').val();
             var treatsLoan = dataTable.$('tr');
             var dispatch = getRemainingToDispatch(loan);
-console.log(dispatch);
             var oldValue = $(this).attr('value');
             var newValue = $(this).val();
             var diff = parseFloat(newValue - oldValue);
